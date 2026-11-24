@@ -1,131 +1,112 @@
 <!DOCTYPE html>
 <html lang="ro">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="theme-color" content="#9e1b1b" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Colinde Tradiționale</title>
-  <link rel="manifest" href="manifest.json" />
-  <link rel="apple-touch-icon" href="icon.png" />
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#9e1b1b">
+  <link rel="apple-touch-icon" href="icon.png">
   <style>
     :root {
       --bg: #fdfbf7;
       --surface: #ffffff;
-      --text: #1f1a17;
-      --text-muted: #6e655f;
+      --text: #1f2937;
+      --text-muted: #6b7280;
       --primary: #9e1b1b;
-      --primary-light: #fbeaea;
-      --accent: #c59b27;
-      --border: #e8e2d9;
-      --shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      --primary-light: #fef2f2;
+      --accent: #d97706;
+      --border: #e5e7eb;
+      --shadow: 0 2px 8px rgba(0,0,0,0.06);
+      --lyrics-size: 18px;
     }
 
     body.dark {
-      --bg: #121212;
-      --surface: #1e1e1e;
-      --text: #f0ece6;
-      --text-muted: #a09890;
-      --primary: #d94141;
-      --primary-light: #361919;
-      --accent: #e0b43c;
-      --border: #303030;
-      --shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+      --bg: #111827;
+      --surface: #1f2937;
+      --text: #f3f4f6;
+      --text-muted: #9ca3af;
+      --primary: #ef4444;
+      --primary-light: #371b1b;
+      --accent: #f59e0b;
+      --border: #374151;
+      --shadow: 0 2px 8px rgba(0,0,0,0.3);
     }
 
     * {
       box-sizing: border-box;
+      margin: 0;
+      padding: 0;
       -webkit-tap-highlight-color: transparent;
     }
 
     body {
-      margin: 0;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       background-color: var(--bg);
       color: var(--text);
       line-height: 1.5;
-      padding-bottom: 95px;
-      transition: background-color 0.25s, color 0.25s;
+      padding-bottom: 90px;
+      transition: background-color 0.2s, color 0.2s;
     }
 
     header {
       position: sticky;
       top: 0;
-      z-index: 20;
+      z-index: 100;
       background-color: var(--primary);
       color: #ffffff;
       padding: 14px 16px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
     }
 
     .header-top {
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      gap: 10px;
+      align-items: center;
+      margin-bottom: 10px;
     }
 
-    h1 {
-      margin: 0;
-      font-size: 1.25rem;
+    .header-title {
+      font-size: 20px;
       font-weight: 700;
       display: flex;
       align-items: center;
       gap: 8px;
     }
 
+    .header-actions {
+      display: flex;
+      gap: 8px;
+    }
+
     .icon-btn {
-      background: rgba(255, 255, 255, 0.16);
+      background: rgba(255,255,255,0.18);
       border: none;
       color: #fff;
-      border-radius: 8px;
-      padding: 7px 11px;
-      font-size: 0.9rem;
-      font-weight: 600;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      font-size: 16px;
       cursor: pointer;
-    }
-
-    .icon-btn:active {
-      background: rgba(255, 255, 255, 0.28);
-    }
-
-    #installBanner {
-      display: none;
-      background: var(--accent);
-      color: #1f1a17;
-      padding: 10px 16px;
-      font-size: 0.9rem;
-      font-weight: 600;
-      text-align: center;
-      cursor: pointer;
-    }
-
-    .controls {
-      padding: 12px 16px 6px;
-      max-width: 720px;
-      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .search-box {
       position: relative;
-      margin-bottom: 10px;
+      width: 100%;
     }
 
     .search-box input {
       width: 100%;
-      padding: 12px 38px 12px 14px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      background: var(--surface);
-      color: var(--text);
-      font-size: 1rem;
+      padding: 10px 36px 10px 14px;
+      border-radius: 10px;
+      border: none;
+      font-size: 15px;
+      background: #ffffff;
+      color: #1f2937;
       outline: none;
-      box-shadow: var(--shadow);
-    }
-
-    .search-box input:focus {
-      border-color: var(--primary);
     }
 
     .clear-search {
@@ -135,33 +116,33 @@
       transform: translateY(-50%);
       background: none;
       border: none;
-      color: var(--text-muted);
-      font-size: 1.1rem;
+      color: #6b7280;
+      font-size: 18px;
       cursor: pointer;
       display: none;
-      padding: 4px 8px;
     }
 
     .tabs {
       display: flex;
       gap: 8px;
-      margin-bottom: 8px;
+      padding: 12px 16px 4px;
+      overflow-x: auto;
     }
 
-    .tab {
-      flex: 1;
-      padding: 9px 10px;
-      border-radius: 10px;
+    .tab-btn {
+      padding: 8px 14px;
+      border-radius: 20px;
       border: 1px solid var(--border);
       background: var(--surface);
       color: var(--text);
+      font-size: 14px;
       font-weight: 600;
-      font-size: 0.9rem;
       cursor: pointer;
-      text-align: center;
+      white-space: nowrap;
+      transition: all 0.15s;
     }
 
-    .tab.active {
+    .tab-btn.active {
       background: var(--primary);
       color: #ffffff;
       border-color: var(--primary);
@@ -170,7 +151,7 @@
     .container {
       max-width: 720px;
       margin: 0 auto;
-      padding: 6px 16px 20px;
+      padding: 8px 16px;
     }
 
     .song-list {
@@ -183,11 +164,11 @@
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 13px 14px;
+      padding: 12px 14px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 10px;
+      gap: 12px;
       box-shadow: var(--shadow);
       cursor: pointer;
       transition: transform 0.1s;
@@ -200,26 +181,28 @@
     .song-info {
       display: flex;
       align-items: center;
-      gap: 10px;
-      min-width: 0;
+      gap: 12px;
       flex: 1;
+      min-width: 0;
     }
 
     .song-num {
       background: var(--primary-light);
       color: var(--primary);
       font-weight: 700;
-      font-size: 0.85rem;
-      padding: 4px 8px;
-      border-radius: 8px;
+      font-size: 13px;
       min-width: 36px;
-      text-align: center;
+      height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       flex-shrink: 0;
     }
 
     .song-title {
       font-weight: 600;
-      font-size: 1rem;
+      font-size: 15px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -228,32 +211,28 @@
     .fav-btn {
       background: none;
       border: none;
-      font-size: 1.35rem;
+      font-size: 22px;
       cursor: pointer;
-      padding: 4px 6px;
-      color: var(--text-muted);
+      color: #d1d5db;
+      padding: 4px;
       flex-shrink: 0;
     }
 
-    .fav-btn.is-fav {
-      color: #e02424;
+    .fav-btn.active {
+      color: var(--accent);
     }
 
     /* Detail View */
     #detailView {
       display: none;
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 14px 16px 30px;
     }
 
-    .detail-toolbar {
+    .detail-header {
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      gap: 8px;
+      align-items: center;
       margin-bottom: 14px;
-      flex-wrap: wrap;
+      gap: 8px;
     }
 
     .back-btn {
@@ -263,85 +242,97 @@
       padding: 8px 14px;
       border-radius: 10px;
       font-weight: 600;
-      font-size: 0.95rem;
+      font-size: 14px;
       cursor: pointer;
-      box-shadow: var(--shadow);
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
     .font-controls {
       display: flex;
-      align-items: center;
       gap: 6px;
+      align-items: center;
     }
 
     .font-btn {
       background: var(--surface);
       border: 1px solid var(--border);
       color: var(--text);
-      padding: 8px 12px;
-      border-radius: 10px;
+      padding: 6px 10px;
+      border-radius: 8px;
       font-weight: 700;
+      font-size: 13px;
       cursor: pointer;
-      box-shadow: var(--shadow);
     }
 
     .detail-card {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 16px;
-      padding: 18px;
+      padding: 20px;
       box-shadow: var(--shadow);
     }
 
-    .detail-header {
+    .detail-title-row {
       display: flex;
-      align-items: flex-start;
       justify-content: space-between;
-      gap: 10px;
-      border-bottom: 1px solid var(--border);
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 16px;
       padding-bottom: 12px;
-      margin-bottom: 14px;
+      border-bottom: 1px solid var(--border);
     }
 
     .detail-title {
-      margin: 0;
-      font-size: 1.3rem;
-      color: var(--primary);
-    }
-
-    .audio-section {
-      display: none;
-      margin-bottom: 16px;
-      padding: 12px;
-      background: var(--primary-light);
-      border-radius: 12px;
-    }
-
-    .play-now-btn {
-      width: 100%;
-      background: var(--primary);
-      color: #ffffff;
-      border: none;
-      border-radius: 10px;
-      padding: 12px;
-      font-size: 1rem;
+      font-size: 21px;
       font-weight: 700;
-      cursor: pointer;
+      color: var(--primary);
+      line-height: 1.3;
+    }
+
+    .audio-box {
+      display: none;
+      background: var(--primary-light);
+      border: 1px solid var(--primary);
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 18px;
+    }
+
+    .audio-box.visible {
+      display: block;
+    }
+
+    .audio-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 8px;
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 8px;
+      gap: 6px;
     }
 
-    .lyrics {
+    audio {
+      width: 100%;
+      height: 40px;
+    }
+
+    .lyrics-text {
+      font-size: var(--lyrics-size);
       white-space: pre-line;
-      font-size: 1.1rem;
       line-height: 1.65;
     }
 
-    /* Persistent Bottom Player */
-    #bottomPlayer {
-      display: none;
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-muted);
+    }
+
+    /* Mini Player */
+    .mini-player {
       position: fixed;
       bottom: 0;
       left: 0;
@@ -349,374 +340,426 @@
       background: var(--surface);
       border-top: 2px solid var(--primary);
       padding: 10px 16px;
-      box-shadow: 0 -4px 14px rgba(0, 0, 0, 0.12);
-      z-index: 30;
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      z-index: 200;
+      box-shadow: 0 -4px 12px rgba(0,0,0,0.1);
     }
 
-    .player-inner {
-      max-width: 720px;
-      margin: 0 auto;
+    .mini-player.visible {
+      display: flex;
     }
 
-    .now-playing {
-      font-size: 0.85rem;
-      font-weight: 700;
+    .mini-info {
+      flex: 1;
+      min-width: 0;
+      cursor: pointer;
+    }
+
+    .mini-label {
+      font-size: 11px;
       color: var(--primary);
-      margin-bottom: 6px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .mini-title {
+      font-size: 14px;
+      font-weight: 600;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
-    audio {
-      width: 100%;
-      height: 38px;
+    .mini-controls {
+      display: flex;
+      gap: 8px;
     }
 
-    .empty-msg {
-      text-align: center;
-      color: var(--text-muted);
-      padding: 30px 10px;
-      font-size: 1rem;
+    .mini-btn {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
   </style>
 </head>
 <body>
 
-  <div id="installBanner">📲 Instalează Aplicația pe Telefon</div>
-
   <header>
     <div class="header-top">
-      <h1>🎄 Colinde Tradiționale</h1>
-      <button class="icon-btn" id="themeToggle" aria-label="Schimbă tema">🌓 Temă</button>
+      <div class="header-title">🎄 Colinde Tradiționale</div>
+      <div class="header-actions">
+        <button class="icon-btn" id="darkModeBtn" title="Mod întunecat">🌙</button>
+      </div>
+    </div>
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Caută după număr, titlu sau versuri...">
+      <button class="clear-search" id="clearSearchBtn">✕</button>
     </div>
   </header>
 
-  <!-- List View -->
-  <div id="listView">
-    <div class="controls">
-      <div class="search-box">
-        <input type="text" id="searchInput" placeholder="Caută după număr, titlu sau versuri..." />
-        <button class="clear-search" id="clearSearch">✕</button>
-      </div>
-      <div class="tabs">
-        <button class="tab active" id="tabAll">Toate (<span id="countAll">0</span>)</button>
-        <button class="tab" id="tabFav">❤ Favorite (<span id="countFav">0</span>)</button>
-      </div>
-    </div>
-
-    <div class="container">
-      <div id="songList" class="song-list">
-        <div class="empty-msg">Se încarcă colindele...</div>
-      </div>
-    </div>
+  <div class="tabs" id="tabsBar">
+    <button class="tab-btn active" data-tab="all" id="tabAll">Toate (0)</button>
+    <button class="tab-btn" data-tab="fav" id="tabFav">⭐ Favorite (0)</button>
   </div>
 
-  <!-- Detail View -->
-  <div id="detailView">
-    <div class="detail-toolbar">
-      <button class="back-btn" id="backBtn">← Înapoi</button>
-      <div class="font-controls">
-        <button class="font-btn" id="fontDown">A-</button>
-        <button class="font-btn" id="fontUp">A+</button>
-        <button class="fav-btn" id="detailFavBtn" style="font-size:1.6rem;">♡</button>
+  <div class="container">
+    <!-- Lista de colinde -->
+    <div id="listView">
+      <div class="song-list" id="songList">
+        <div class="empty-state">Se încarcă colindele...</div>
       </div>
     </div>
 
-    <div class="detail-card">
+    <!-- Pagina colindului selectat -->
+    <div id="detailView">
       <div class="detail-header">
-        <h2 class="detail-title" id="detailTitle"></h2>
+        <button class="back-btn" id="backBtn">← Înapoi la listă</button>
+        <div class="font-controls">
+          <button class="font-btn" id="fontDecBtn">A-</button>
+          <button class="font-btn" id="fontIncBtn">A+</button>
+        </div>
       </div>
 
-      <div class="audio-section" id="audioSection">
-        <button class="play-now-btn" id="playNowBtn">▶ Ascultă colindul (MP3)</button>
-      </div>
+      <div class="detail-card">
+        <div class="detail-title-row">
+          <div class="detail-title" id="detailTitle">Titlu colind</div>
+          <button class="fav-btn" id="detailFavBtn">★</button>
+        </div>
 
-      <div class="lyrics" id="detailLyrics"></div>
+        <div class="audio-box" id="audioBox">
+          <div class="audio-label">🎵 Ascultă colindul</div>
+          <audio id="mainAudio" controls preload="none"></audio>
+        </div>
+
+        <div class="lyrics-text" id="detailLyrics"></div>
+      </div>
     </div>
   </div>
 
-  <!-- Bottom Persistent Audio Player -->
-  <div id="bottomPlayer">
-    <div class="player-inner">
-      <div class="now-playing" id="nowPlayingText">Se redă: ...</div>
-      <audio id="audioPlayer" controls preload="none"></audio>
+  <!-- Mini Player pentru redare în fundal -->
+  <div class="mini-player" id="miniPlayer">
+    <div class="mini-info" id="miniInfo">
+      <div class="mini-label">Se redă acum</div>
+      <div class="mini-title" id="miniTitle">-</div>
+    </div>
+    <div class="mini-controls">
+      <button class="mini-btn" id="miniPlayPauseBtn">⏸</button>
+      <button class="mini-btn" id="miniCloseBtn" style="background:#6b7280;">✕</button>
     </div>
   </div>
 
   <script>
-    // =========================================================
-    // CONFIGURARE AUTOMATĂ GITHUB RELEASES
-    // =========================================================
-    const GITHUB_USER = "GeorgAC";
-    const GITHUB_REPO = "colinde-app";
-    const RELEASE_TAG = "v1.0";
-    // =========================================================
-
-    function getAudioUrl(id) {
-      return `https://github.com/${GITHUB_USER}/${GITHUB_REPO}/releases/download/${RELEASE_TAG}/${id}.mp3`;
-    }
+    // CONFIGURARE GITHUB
+    const GITHUB_USER = 'GeorgAC';
+    const GITHUB_REPO = 'colinde-app';
+    const RELEASE_TAG = 'v1.0';
 
     let allSongs = [];
-    let favorites = JSON.parse(localStorage.getItem("colinde_favs") || "[]");
-    let currentTab = "all";
+    let favorites = JSON.parse(localStorage.getItem('colinde_favs') || '[]');
+    let currentTab = 'all';
     let currentSong = null;
-    let currentFontSize = parseFloat(localStorage.getItem("colinde_fontsize") || "1.1");
+    let playingSong = null;
+    let lyricsSize = parseInt(localStorage.getItem('colinde_font_size') || '18', 10);
 
-    const listView = document.getElementById("listView");
-    const detailView = document.getElementById("detailView");
-    const songListEl = document.getElementById("songList");
-    const searchInput = document.getElementById("searchInput");
-    const clearSearch = document.getElementById("clearSearch");
-    const tabAll = document.getElementById("tabAll");
-    const tabFav = document.getElementById("tabFav");
-    const countAll = document.getElementById("countAll");
-    const countFav = document.getElementById("countFav");
+    const songListEl = document.getElementById('songList');
+    const listViewEl = document.getElementById('listView');
+    const detailViewEl = document.getElementById('detailView');
+    const tabsBarEl = document.getElementById('tabsBar');
+    const searchInput = document.getElementById('searchInput');
+    const clearSearchBtn = document.getElementById('clearSearchBtn');
+    const tabAllEl = document.getElementById('tabAll');
+    const tabFavEl = document.getElementById('tabFav');
+    const mainAudio = document.getElementById('mainAudio');
+    const audioBox = document.getElementById('audioBox');
+    const miniPlayer = document.getElementById('miniPlayer');
+    const miniTitle = document.getElementById('miniTitle');
+    const miniPlayPauseBtn = document.getElementById('miniPlayPauseBtn');
 
-    const detailTitle = document.getElementById("detailTitle");
-    const detailLyrics = document.getElementById("detailLyrics");
-    const detailFavBtn = document.getElementById("detailFavBtn");
-    const audioSection = document.getElementById("audioSection");
-    const playNowBtn = document.getElementById("playNowBtn");
-
-    const bottomPlayer = document.getElementById("bottomPlayer");
-    const audioPlayer = document.getElementById("audioPlayer");
-    const nowPlayingText = document.getElementById("nowPlayingText");
-
-    // Theme setup
-    if (localStorage.getItem("colinde_dark") === "1") {
-      document.body.classList.add("dark");
+    // Inițializare temă și font
+    if (localStorage.getItem('colinde_dark') === '1') {
+      document.body.classList.add('dark');
+      document.getElementById('darkModeBtn').textContent = '☀️';
     }
-    document.getElementById("themeToggle").addEventListener("click", () => {
-      document.body.classList.toggle("dark");
-      localStorage.setItem("colinde_dark", document.body.classList.contains("dark") ? "1" : "0");
+    document.documentElement.style.setProperty('--lyrics-size', lyricsSize + 'px');
+
+    document.getElementById('darkModeBtn').addEventListener('click', () => {
+      document.body.classList.toggle('dark');
+      const isDark = document.body.classList.contains('dark');
+      localStorage.setItem('colinde_dark', isDark ? '1' : '0');
+      document.getElementById('darkModeBtn').textContent = isDark ? '☀️' : '🌙';
     });
 
-    // Normalize text for diacritic-insensitive search
+    document.getElementById('fontDecBtn').addEventListener('click', () => {
+      if (lyricsSize > 14) {
+        lyricsSize -= 2;
+        document.documentElement.style.setProperty('--lyrics-size', lyricsSize + 'px');
+        localStorage.setItem('colinde_font_size', lyricsSize);
+      }
+    });
+
+    document.getElementById('fontIncBtn').addEventListener('click', () => {
+      if (lyricsSize < 30) {
+        lyricsSize += 2;
+        document.documentElement.style.setProperty('--lyrics-size', lyricsSize + 'px');
+        localStorage.setItem('colinde_font_size', lyricsSize);
+      }
+    });
+
+    // Eliminare diacritice pentru căutare
     function normalizeText(str) {
-      return (str || "")
+      return (str || '')
         .toString()
         .toLowerCase()
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "");
-    }
-
-    // Load songs from colinde.json (bypass cache so updates show immediately)
-    async function loadSongs() {
-      try {
-        const response = await fetch("colinde.json?v=" + Date.now());
-        if (!response.ok) throw new Error("Nu s-a putut încărca colinde.json");
-        allSongs = await response.json();
-        updateCounts();
-        renderList();
-      } catch (err) {
-        songListEl.innerHTML = `<div class="empty-msg">Eroare la încărcarea colindelor. Verifică dacă fișierul <b>colinde.json</b> este încărcat pe GitHub.</div>`;
-      }
+        .normalize('NFD')
+        .replace(/[̀-ͯ]/g, '')
+        .replace(/ă/g, 'a').replace(/â/g, 'a').replace(/î/g, 'i')
+        .replace(/ș/g, 's').replace(/ş/g, 's')
+        .replace(/ț/g, 't').replace(/ţ/g, 't');
     }
 
     function updateCounts() {
-      countAll.textContent = allSongs.length;
-      countFav.textContent = favorites.length;
+      tabAllEl.textContent = `Toate (${allSongs.length})`;
+      const validFavs = favorites.filter(id => allSongs.some(s => String(s.id) === String(id)));
+      tabFavEl.textContent = `⭐ Favorite (${validFavs.length})`;
     }
 
     function toggleFavorite(id, event) {
       if (event) event.stopPropagation();
-      const idx = favorites.indexOf(id);
+      const strId = String(id);
+      const idx = favorites.indexOf(strId);
       if (idx === -1) {
-        favorites.push(id);
+        favorites.push(strId);
       } else {
         favorites.splice(idx, 1);
       }
-      localStorage.setItem("colinde_favs", JSON.stringify(favorites));
+      localStorage.setItem('colinde_favs', JSON.stringify(favorites));
       updateCounts();
       renderList();
-      if (currentSong && currentSong.id === id) {
-        updateDetailFavIcon();
+      if (currentSong && String(currentSong.id) === strId) {
+        updateDetailFavBtn();
       }
     }
 
+    function updateDetailFavBtn() {
+      const btn = document.getElementById('detailFavBtn');
+      const isFav = favorites.includes(String(currentSong.id));
+      btn.classList.toggle('active', isFav);
+      btn.textContent = isFav ? '★' : '☆';
+    }
+
     function renderList() {
-      const q = normalizeText(searchInput.value.trim());
-      clearSearch.style.display = q.length > 0 ? "block" : "none";
+      const query = normalizeText(searchInput.value.trim());
+      clearSearchBtn.style.display = query ? 'block' : 'none';
 
       let filtered = allSongs;
-      if (currentTab === "fav") {
-        filtered = filtered.filter(s => favorites.includes(s.id));
+      if (currentTab === 'fav') {
+        filtered = filtered.filter(s => favorites.includes(String(s.id)));
       }
-      if (q.length > 0) {
+
+      if (query) {
         filtered = filtered.filter(s => {
-          const idMatch = String(s.id) === q;
-          const titleMatch = normalizeText(s.titlu).includes(q);
-          const lyricsMatch = normalizeText(s.versuri).includes(q);
+          const idMatch = String(s.id) === query;
+          const titleMatch = normalizeText(s.titlu).includes(query);
+          const lyricsMatch = normalizeText(s.versuri).includes(query);
           return idMatch || titleMatch || lyricsMatch;
         });
       }
 
       if (filtered.length === 0) {
-        songListEl.innerHTML = `<div class="empty-msg">${currentTab === "fav" && !q ? "Nu ai adăugat încă niciun colind la favorite." : "Niciun colind găsit."}</div>`;
+        songListEl.innerHTML = `<div class="empty-state">${
+          currentTab === 'fav' && !query
+            ? 'Nu ai adăugat încă niciun colind la favorite. Apasă pe steluța ☆ din dreptul unui colind.'
+            : 'Nu s-a găsit niciun colind pentru căutarea ta.'
+        }</div>`;
         return;
       }
 
-      const fragment = document.createDocumentFragment();
-      filtered.forEach(song => {
-        const isFav = favorites.includes(song.id);
-        const card = document.createElement("div");
-        card.className = "song-card";
-        card.onclick = () => openSong(song);
-
-        card.innerHTML = `
-          <div class="song-info">
-            <span class="song-num">${song.id}</span>
-            <span class="song-title">${song.titlu}</span>
+      songListEl.innerHTML = filtered.map(song => {
+        const isFav = favorites.includes(String(song.id));
+        return `
+          <div class="song-card" onclick="openSong('${song.id}')">
+            <div class="song-info">
+              <div class="song-num">${song.id}</div>
+              <div class="song-title">${escapeHtml(song.titlu)}</div>
+            </div>
+            <button class="fav-btn ${isFav ? 'active' : ''}" onclick="toggleFavorite('${song.id}', event)" title="Favorite">
+              ${isFav ? '★' : '☆'}
+            </button>
           </div>
-          <button class="fav-btn ${isFav ? "is-fav" : ""}" aria-label="Favorit">${isFav ? "❤" : "♡"}</button>
         `;
-
-        card.querySelector(".fav-btn").onclick = (e) => toggleFavorite(song.id, e);
-        fragment.appendChild(card);
-      });
-
-      songListEl.innerHTML = "";
-      songListEl.appendChild(fragment);
+      }).join('');
     }
 
-    // Automatically check if MP3 exists for this song without throwing console errors
-    function checkAudioAvailability(song) {
-      audioSection.style.display = "none";
-      const url = getAudioUrl(song.id);
-      const probe = new Audio();
-      probe.preload = "metadata";
-
-      probe.onloadedmetadata = () => {
-        if (currentSong && currentSong.id === song.id) {
-          audioSection.style.display = "block";
-        }
-      };
-
-      probe.onerror = () => {
-        if (currentSong && currentSong.id === song.id) {
-          audioSection.style.display = "none";
-        }
-      };
-
-      probe.src = url;
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text || '';
+      return div.innerHTML;
     }
 
-    function openSong(song) {
+    function getMp3Url(id) {
+      return `https://github.com/${GITHUB_USER}/${GITHUB_REPO}/releases/download/${RELEASE_TAG}/${id}.mp3`;
+    }
+
+    function openSong(id) {
+      const song = allSongs.find(s => String(s.id) === String(id));
+      if (!song) return;
+
       currentSong = song;
-      detailTitle.textContent = `${song.id}. ${song.titlu}`;
-      detailLyrics.textContent = song.versuri && song.versuri.trim() !== ""
-        ? song.versuri
-        : "(Versurile pentru acest colind nu au fost încă adăugate.)";
-      detailLyrics.style.fontSize = currentFontSize + "rem";
+      document.getElementById('detailTitle').textContent = `${song.id}. ${song.titlu}`;
+      document.getElementById('detailLyrics').textContent = song.versuri || '(Versurile nu au fost adăugate încă)';
+      updateDetailFavBtn();
 
-      updateDetailFavIcon();
-      checkAudioAvailability(song);
-
-      listView.style.display = "none";
-      detailView.style.display = "block";
+      listViewEl.style.display = 'none';
+      tabsBarEl.style.display = 'none';
+      detailViewEl.style.display = 'block';
       window.scrollTo(0, 0);
-      history.pushState({ songId: song.id }, "", "#colind-" + song.id);
-    }
 
-    function closeSong() {
-      currentSong = null;
-      detailView.style.display = "none";
-      listView.style.display = "block";
-    }
-
-    function updateDetailFavIcon() {
-      if (!currentSong) return;
-      const isFav = favorites.includes(currentSong.id);
-      detailFavBtn.textContent = isFav ? "❤" : "♡";
-      detailFavBtn.classList.toggle("is-fav", isFav);
-    }
-
-    playNowBtn.addEventListener("click", () => {
-      if (!currentSong) return;
-      const url = getAudioUrl(currentSong.id);
-      audioPlayer.src = url;
-      nowPlayingText.textContent = `🎵 ${currentSong.id}. ${currentSong.titlu}`;
-      bottomPlayer.style.display = "block";
-      audioPlayer.play().catch(() => {});
-
-      if ("mediaSession" in navigator) {
-        navigator.mediaSession.metadata = new MediaMetadata({
-          title: currentSong.titlu,
-          artist: "Colinde Tradiționale",
-          album: "Colecție Colinde",
-          artwork: [{ src: "icon.png", sizes: "512x512", type: "image/png" }]
-        });
+      // Verifică automat dacă există MP3 pe GitHub Releases
+      const mp3Url = getMp3Url(song.id);
+      if (playingSong && String(playingSong.id) === String(song.id)) {
+        audioBox.classList.add('visible');
+      } else {
+        audioBox.classList.remove('visible');
+        const probe = new Audio();
+        probe.preload = 'metadata';
+        probe.onloadedmetadata = () => {
+          if (currentSong && String(currentSong.id) === String(song.id)) {
+            if (!playingSong || String(playingSong.id) !== String(song.id)) {
+              mainAudio.src = mp3Url;
+            }
+            audioBox.classList.add('visible');
+          }
+        };
+        probe.onerror = () => {
+          if (currentSong && String(currentSong.id) === String(song.id)) {
+            if (!playingSong || String(playingSong.id) !== String(song.id)) {
+              audioBox.classList.remove('visible');
+            }
+          }
+        };
+        probe.src = mp3Url;
       }
-    });
+    }
 
-    detailFavBtn.addEventListener("click", () => {
+    function showList() {
+      detailViewEl.style.display = 'none';
+      tabsBarEl.style.display = 'flex';
+      listViewEl.style.display = 'block';
+      currentSong = null;
+    }
+
+    document.getElementById('backBtn').addEventListener('click', showList);
+    document.getElementById('detailFavBtn').addEventListener('click', () => {
       if (currentSong) toggleFavorite(currentSong.id);
     });
 
-    document.getElementById("backBtn").addEventListener("click", () => {
-      if (location.hash.startsWith("#colind-")) {
-        history.back();
+    // Gestionare Audio & Media Session API (fundal + ecran blocat)
+    mainAudio.addEventListener('play', () => {
+      if (currentSong) {
+        playingSong = currentSong;
+        miniTitle.textContent = `${playingSong.id}. ${playingSong.titlu}`;
+        miniPlayer.classList.add('visible');
+        miniPlayPauseBtn.textContent = '⏸';
+
+        if ('mediaSession' in navigator) {
+          navigator.mediaSession.metadata = new MediaMetadata({
+            title: playingSong.titlu,
+            artist: 'Colinde Tradiționale',
+            artwork: [{ src: 'icon.png', sizes: '512x512', type: 'image/png' }]
+          });
+          navigator.mediaSession.setActionHandler('play', () => mainAudio.play());
+          navigator.mediaSession.setActionHandler('pause', () => mainAudio.pause());
+        }
+      }
+    });
+
+    mainAudio.addEventListener('pause', () => {
+      miniPlayPauseBtn.textContent = '▶';
+    });
+
+    miniPlayPauseBtn.addEventListener('click', () => {
+      if (mainAudio.paused) {
+        mainAudio.play();
       } else {
-        closeSong();
+        mainAudio.pause();
       }
     });
 
-    window.addEventListener("popstate", () => {
-      if (detailView.style.display === "block") {
-        closeSong();
+    document.getElementById('miniCloseBtn').addEventListener('click', () => {
+      mainAudio.pause();
+      mainAudio.currentTime = 0;
+      playingSong = null;
+      miniPlayer.classList.remove('visible');
+    });
+
+    document.getElementById('miniInfo').addEventListener('click', () => {
+      if (playingSong) openSong(playingSong.id);
+    });
+
+    // Tab-uri și căutare
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentTab = btn.dataset.tab;
+        renderList();
+      });
+    });
+
+    searchInput.addEventListener('input', renderList);
+    clearSearchBtn.addEventListener('click', () => {
+      searchInput.value = '';
+      renderList();
+    });
+
+    // Încărcare colinde.json (cu cache offline)
+    async function loadSongs() {
+      const cached = localStorage.getItem('colinde_data_cache');
+      if (cached) {
+        try {
+          allSongs = JSON.parse(cached);
+          updateCounts();
+          renderList();
+        } catch (e) {}
       }
-    });
 
-    document.getElementById("fontUp").addEventListener("click", () => {
-      currentFontSize = Math.min(1.8, +(currentFontSize + 0.1).toFixed(1));
-      detailLyrics.style.fontSize = currentFontSize + "rem";
-      localStorage.setItem("colinde_fontsize", currentFontSize);
-    });
+      try {
+        const res = await fetch('colinde.json?v=' + Date.now());
+        if (!res.ok) throw new Error('Eroare încărcare JSON');
+        const rawData = await res.json();
+        const cleaned = rawData
+          .filter(item => item && String(item.id || '').trim() !== '' && String(item.titlu || '').trim() !== '')
+          .map(item => ({
+            id: String(item.id).trim(),
+            titlu: String(item.titlu).trim(),
+            versuri: String(item.versuri || '').replace(/
+/g, '
+').trim()
+          }));
 
-    document.getElementById("fontDown").addEventListener("click", () => {
-      currentFontSize = Math.max(0.85, +(currentFontSize - 0.1).toFixed(1));
-      detailLyrics.style.fontSize = currentFontSize + "rem";
-      localStorage.setItem("colinde_fontsize", currentFontSize);
-    });
-
-    searchInput.addEventListener("input", renderList);
-    clearSearch.addEventListener("click", () => {
-      searchInput.value = "";
-      renderList();
-      searchInput.focus();
-    });
-
-    tabAll.addEventListener("click", () => {
-      currentTab = "all";
-      tabAll.classList.add("active");
-      tabFav.classList.remove("active");
-      renderList();
-    });
-
-    tabFav.addEventListener("click", () => {
-      currentTab = "fav";
-      tabFav.classList.add("active");
-      tabAll.classList.remove("active");
-      renderList();
-    });
-
-    // PWA Install Prompt
-    let deferredPrompt;
-    const installBanner = document.getElementById("installBanner");
-    window.addEventListener("beforeinstallprompt", (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-      installBanner.style.display = "block";
-    });
-
-    installBanner.addEventListener("click", async () => {
-      if (!deferredPrompt) return;
-      deferredPrompt.prompt();
-      await deferredPrompt.userChoice;
-      deferredPrompt = null;
-      installBanner.style.display = "none";
-    });
+        if (cleaned.length > 0) {
+          allSongs = cleaned;
+          localStorage.setItem('colinde_data_cache', JSON.stringify(allSongs));
+          updateCounts();
+          renderList();
+        }
+      } catch (err) {
+        if (allSongs.length === 0) {
+          songListEl.innerHTML = '<div class="empty-state">Nu s-a putut încărca fișierul <b>colinde.json</b>. Verifică dacă este urcat pe GitHub.</div>';
+        }
+      }
+    }
 
     loadSongs();
   </script>
