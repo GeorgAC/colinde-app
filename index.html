@@ -101,8 +101,8 @@
     }
     .tabs {
       display: flex;
-      gap: 8px;
-      padding: 10px 16px;
+      gap: 6px;
+      padding: 10px 12px;
       background: var(--bg);
       border-bottom: 1px solid var(--border);
       position: sticky;
@@ -111,15 +111,16 @@
     }
     .tab {
       flex: 1;
-      padding: 8px 12px;
+      padding: 8px 6px;
       border-radius: 20px;
       border: 1px solid var(--border);
       background: var(--card);
       color: var(--text);
       font-weight: 600;
-      font-size: 0.9rem;
+      font-size: 0.82rem;
       cursor: pointer;
       text-align: center;
+      white-space: nowrap;
     }
     .tab.active {
       background: var(--primary);
@@ -170,6 +171,13 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .audio-badge {
+      font-size: 0.85rem;
+      flex-shrink: 0;
     }
     .carol-preview {
       font-size: 0.82rem;
@@ -345,6 +353,7 @@
 
 <div class="tabs" id="tabs-bar">
   <button class="tab active" data-tab="all" id="tab-all">Toate (0)</button>
+  <button class="tab" data-tab="audio" id="tab-audio">🎵 Cu audio (0)</button>
   <button class="tab" data-tab="fav" id="tab-fav">⭐ Favorite (0)</button>
 </div>
 
@@ -393,6 +402,7 @@
   const RELEASE_TAG = "v1.0";
 
   let allCarols = [];
+  let audioIds = new Set(JSON.parse(localStorage.getItem("colinde_audio_ids") || "[]"));
   let favorites = JSON.parse(localStorage.getItem("colinde_favs") || "[]");
   let currentTab = "all";
   let currentCarol = null;
@@ -406,6 +416,7 @@
   const searchInput = document.getElementById("search-input");
   const clearSearchBtn = document.getElementById("clear-search");
   const tabAllEl = document.getElementById("tab-all");
+  const tabAudioEl = document.getElementById("tab-audio");
   const tabFavEl = document.getElementById("tab-fav");
   const detailTitleEl = document.getElementById("detail-title");
   const detailLyricsEl = document.getElementById("detail-lyrics");
@@ -435,7 +446,7 @@
       .toString()
       .toLowerCase()
       .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[̀-ͯ]/g, "")
       .replace(/[șş]/g, "s")
       .replace(/[țţ]/g, "t");
   }
@@ -446,6 +457,8 @@
 
   function updateCounts() {
     tabAllEl.textContent = `Toate (${allCarols.length})`;
+    const validAudio = allCarols.filter(c => audioIds.has(String(c.id)));
+    tabAudioEl.textContent = `🎵 Cu audio (${validAudio.length})`;
     const validFavs = favorites.filter(id => allCarols.some(c => String(c.id) === String(id)));
     tabFavEl.textContent = `⭐ Favorite (${validFavs.length})`;
   }
@@ -471,9 +484,12 @@
     clearSearchBtn.style.display = query ? "block" : "none";
 
     let filtered = allCarols;
-    if (currentTab === "fav") {
+    if (currentTab === "audio") {
+      filtered = filtered.filter(c => audioIds.has(String(c.id)));
+    } else if (currentTab === "fav") {
       filtered = filtered.filter(c => favorites.includes(String(c.id)));
     }
+
     if (query) {
       filtered = filtered.filter(c =>
         String(c.id) === query ||
@@ -483,25 +499,30 @@
     }
 
     if (filtered.length === 0) {
-      carolListEl.innerHTML = `<div class="status-msg">${
-        currentTab === "fav" && !query
-          ? "Nu ai adăugat încă niciun colind la favorite."
-          : "Nu s-a găsit niciun colind."
-      }</div>`;
+      let emptyMsg = "Nu s-a găsit niciun colind.";
+      if (currentTab === "fav" && !query) emptyMsg = "Nu ai adăugat încă niciun colind la favorite.";
+      if (currentTab === "audio" && !query) emptyMsg = "Nu s-au găsit colinde cu fișier audio încărcat.";
+      carolListEl.innerHTML = `<div class="status-msg">${emptyMsg}</div>`;
       return;
     }
 
     const fragment = document.createDocumentFragment();
     filtered.forEach(carol => {
-      const isFav = favorites.includes(String(carol.id));
-      const firstLine = (carol.versuri || "").split(/\r?\n/).find(l => l.trim()) || "Fără versuri";
+      const strId = String(carol.id);
+      const isFav = favorites.includes(strId);
+      const hasAudio = audioIds.has(strId);
+      const firstLine = (carol.versuri || "").split(/?
+/).find(l => l.trim()) || "Fără versuri";
       const div = document.createElement("div");
       div.className = "carol-item";
       div.innerHTML = `
         <div class="carol-info">
           <div class="carol-num">${carol.id}</div>
           <div style="min-width:0;flex:1;">
-            <div class="carol-title">${carol.titlu}</div>
+            <div class="carol-title">
+              <span style="overflow:hidden;text-overflow:ellipsis;">${carol.titlu}</span>
+              ${hasAudio ? '<span class="audio-badge" title="Are înregistrare audio">🎵</span>' : ''}
+            </div>
             <div class="carol-preview">${firstLine}</div>
           </div>
         </div>
@@ -517,19 +538,28 @@
   }
 
   function checkAudioAvailable(id) {
+    const strId = String(id);
+    if (audioIds.has(strId)) {
+      audioBox.style.display = "block";
+      updatePlayButtonState();
+      return;
+    }
     audioBox.style.display = "none";
     const url = getMp3Url(id);
     const probe = new Audio();
     probe.preload = "metadata";
     probe.onloadedmetadata = () => {
-      if (currentCarol && String(currentCarol.id) === String(id)) {
+      audioIds.add(strId);
+      localStorage.setItem("colinde_audio_ids", JSON.stringify([...audioIds]));
+      updateCounts();
+      if (currentCarol && String(currentCarol.id) === strId) {
         audioBox.style.display = "block";
         updatePlayButtonState();
       }
       probe.src = "";
     };
     probe.onerror = () => {
-      if (currentCarol && String(currentCarol.id) === String(id)) {
+      if (currentCarol && String(currentCarol.id) === strId) {
         audioBox.style.display = "none";
       }
     };
@@ -545,7 +575,9 @@
   function openCarol(carol) {
     currentCarol = carol;
     detailTitleEl.textContent = `${carol.id}. ${carol.titlu}`;
-    detailLyricsEl.textContent = (carol.versuri || "Versuri indisponibile.").replace(/\r\n/g, "\n");
+    detailLyricsEl.textContent = (carol.versuri || "Versuri indisponibile.").replace(/
+/g, "
+");
     detailLyricsEl.style.fontSize = fontSize + "rem";
     detailFavBtn.classList.toggle("active", favorites.includes(String(carol.id)));
 
@@ -562,6 +594,7 @@
     detailView.style.display = "none";
     tabsBar.style.display = "flex";
     listView.style.display = "block";
+    renderList();
   });
 
   detailFavBtn.addEventListener("click", () => {
@@ -649,6 +682,28 @@
     searchInput.focus();
   });
 
+  async function detectReleaseAudios() {
+    try {
+      const apiUrl = `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/releases/tags/${RELEASE_TAG}`;
+      const res = await fetch(apiUrl);
+      if (!res.ok) return;
+      const data = await res.json();
+      if (Array.isArray(data.assets)) {
+        const found = new Set();
+        data.assets.forEach(asset => {
+          const match = String(asset.name || "").match(/^(\d+)\.mp3$/i);
+          if (match) found.add(match[1]);
+        });
+        if (found.size > 0) {
+          audioIds = found;
+          localStorage.setItem("colinde_audio_ids", JSON.stringify([...audioIds]));
+          updateCounts();
+          renderList();
+        }
+      }
+    } catch (e) {}
+  }
+
   async function loadCarols() {
     try {
       const res = await fetch("colinde.json?v=" + Date.now());
@@ -674,6 +729,7 @@
     }
     updateCounts();
     renderList();
+    detectReleaseAudios();
   }
 
   loadCarols();
