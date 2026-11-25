@@ -2,395 +2,215 @@
 <html lang="ro">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>Colinde Tradiționale</title>
   <link rel="manifest" href="manifest.json" />
   <link rel="icon" type="image/png" href="icon.png" />
   <link rel="apple-touch-icon" href="icon.png" />
   <meta name="theme-color" content="#8b1e24" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="Colinde" />
   <style>
     :root {
-      --bg: #f8f5f2;
-      --card: #ffffff;
-      --text: #1f1f1f;
-      --muted: #666666;
-      --primary: #8b1e24;
-      --primary-light: #fdf2f2;
-      --accent: #d4a017;
-      --border: #e5e0db;
-      --shadow: 0 2px 8px rgba(0,0,0,0.06);
+      --bg: #f8f5f2; --card: #ffffff; --text: #1f1f1f; --muted: #666666;
+      --primary: #8b1e24; --primary-light: #fdf2f2; --accent: #d4a017;
+      --border: #e5e0db; --shadow: 0 2px 8px rgba(0,0,0,0.06);
     }
     body.dark {
-      --bg: #121212;
-      --card: #1e1e1e;
-      --text: #f0f0f0;
-      --muted: #a0a0a0;
-      --primary: #c93b42;
-      --primary-light: #2d1b1c;
-      --accent: #e5b53a;
-      --border: #333333;
-      --shadow: 0 2px 8px rgba(0,0,0,0.3);
+      --bg: #121212; --card: #1e1e1e; --text: #f0f0f0; --muted: #a0a0a0;
+      --primary: #c93b42; --primary-light: #2d1b1c; --accent: #e5b53a;
+      --border: #333333; --shadow: 0 2px 8px rgba(0,0,0,0.3);
     }
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    [hidden] { display: none !important; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      padding-bottom: 90px;
-      transition: background 0.2s, color 0.2s;
+      background: var(--bg); color: var(--text);
+      padding-bottom: env(safe-area-inset-bottom);
+      transition: background .2s, color .2s;
     }
+    body.has-player { padding-bottom: calc(env(safe-area-inset-bottom) + 112px); }
+    button { font: inherit; color: inherit; cursor: pointer; border: none; background: none; }
+
+    /* ---------- header + filtre (pagina 1) ---------- */
     header {
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      background: var(--primary);
-      color: #fff;
-      padding: 14px 16px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+      position: sticky; top: 0; z-index: 20; background: var(--primary); color: #fff;
+      padding: calc(env(safe-area-inset-top) + 12px) 16px 10px; box-shadow: 0 2px 10px rgba(0,0,0,.15);
     }
-    .header-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 10px;
-    }
-    .header-top h1 {
-      font-size: 1.2rem;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+    .header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+    .header-top h1 { font-size: 1.2rem; font-weight: 700; }
     .icon-btn {
-      background: rgba(255,255,255,0.18);
-      border: none;
-      color: #fff;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      font-size: 1.1rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      background: rgba(255,255,255,.18); color: #fff; width: 36px; height: 36px; border-radius: 50%;
+      font-size: 1.1rem; display: flex; align-items: center; justify-content: center;
     }
-    .search-box {
-      position: relative;
-      display: flex;
-      align-items: center;
-    }
+    .search-box { position: relative; display: flex; align-items: center; }
     .search-box input {
-      width: 100%;
-      padding: 10px 36px 10px 14px;
-      border-radius: 10px;
-      border: none;
-      font-size: 1rem;
-      background: rgba(255,255,255,0.95);
-      color: #1f1f1f;
-      outline: none;
+      width: 100%; padding: 10px 36px 10px 14px; border-radius: 10px; border: none; font-size: 1rem;
+      background: rgba(255,255,255,.95); color: #1f1f1f; outline: none;
     }
-    .clear-search {
-      position: absolute;
-      right: 10px;
-      background: none;
-      border: none;
-      font-size: 1rem;
-      color: #666;
-      cursor: pointer;
-      display: none;
-    }
-    .tabs {
-      display: flex;
-      gap: 6px;
-      padding: 10px 12px;
-      background: var(--bg);
-      border-bottom: 1px solid var(--border);
-      position: sticky;
-      top: 104px;
-      z-index: 15;
-    }
+    .clear-search { position: absolute; right: 10px; font-size: 1rem; color: #666; display: none; }
+    .tabs { display: flex; gap: 6px; margin-top: 10px; }
     .tab {
-      flex: 1;
-      padding: 8px 6px;
-      border-radius: 20px;
-      border: 1px solid var(--border);
-      background: var(--card);
-      color: var(--text);
-      font-weight: 600;
-      font-size: 0.82rem;
-      cursor: pointer;
-      text-align: center;
-      white-space: nowrap;
+      flex: 1; padding: 8px 6px; border-radius: 20px; border: 1px solid rgba(255,255,255,.45);
+      background: transparent; color: #fff; font-weight: 600; font-size: .82rem; text-align: center; white-space: nowrap;
     }
-    .tab.active {
-      background: var(--primary);
-      color: #fff;
-      border-color: var(--primary);
-    }
-    .container {
+    .tab.active { background: #fff; color: var(--primary); border-color: #fff; }
+    .audio-bar { display: flex; align-items: center; gap: 10px; margin-top: 10px; font-size: .88rem; }
+    .audio-bar label { flex: 1; display: flex; align-items: center; gap: 8px; }
+    .audio-bar input { width: 18px; height: 18px; accent-color: var(--accent); }
+    .play-all { background: #fff; color: var(--primary); padding: 7px 14px; border-radius: 18px; font-weight: 700; }
+
+    .install {
+      display: flex; align-items: center; gap: 10px; margin: 12px 16px 0; padding: 12px 14px;
+      border-radius: 12px; background: var(--primary); color: #fff; font-size: .9rem;
       max-width: 720px;
-      margin: 0 auto;
-      padding: 12px 16px;
     }
+    @media (min-width: 760px) { .install { margin-left: auto; margin-right: auto; } }
+    .install span { flex: 1; }
+    .install .go { background: #fff; color: var(--primary); padding: 8px 12px; border-radius: 10px; font-weight: 700; }
+    .install .x { font-size: 1.1rem; padding: 2px 8px; color: #fff; }
+
+    .container { max-width: 720px; margin: 0 auto; padding: 12px 16px; }
     .carol-item {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 14px 16px;
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      box-shadow: var(--shadow);
-      cursor: pointer;
+      background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 12px 8px 12px 14px;
+      margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; gap: 8px;
+      box-shadow: var(--shadow); cursor: pointer;
     }
-    .carol-info {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex: 1;
-      min-width: 0;
-    }
+    .carol-item.last { outline: 2px solid var(--accent); }
+    .carol-info { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
     .carol-num {
-      background: var(--primary-light);
-      color: var(--primary);
-      font-weight: 700;
-      font-size: 0.85rem;
-      min-width: 38px;
-      height: 38px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
+      background: var(--primary-light); color: var(--primary); font-weight: 700; font-size: .85rem;
+      min-width: 38px; height: 38px; padding: 0 6px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
     }
-    .carol-title {
-      font-weight: 600;
-      font-size: 1rem;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .audio-badge {
-      font-size: 0.85rem;
-      flex-shrink: 0;
-    }
-    .carol-preview {
-      font-size: 0.82rem;
-      color: var(--muted);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      margin-top: 2px;
-    }
-    .fav-btn {
-      background: none;
-      border: none;
-      font-size: 1.4rem;
-      cursor: pointer;
-      color: #ccc;
-      padding: 4px;
-      flex-shrink: 0;
-    }
+    .carol-text { min-width: 0; flex: 1; }
+    .carol-title { font-weight: 600; font-size: 1rem; display: flex; align-items: center; gap: 6px; }
+    .carol-title .ttl { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .audio-badge { font-size: .85rem; flex-shrink: 0; }
+    .carol-preview { font-size: .78rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px; }
+    .fav-btn { font-size: 1.5rem; color: #c9c4be; width: 44px; height: 44px; flex-shrink: 0; }
+    body.dark .fav-btn { color: #555; }
     .fav-btn.active { color: var(--accent); }
+    .status-msg { text-align: center; padding: 40px 16px; color: var(--muted); font-size: 1rem; }
+
+    /* ---------- pagina 2: colind ---------- */
     #detail-view { display: none; }
     .detail-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 14px;
-      gap: 8px;
+      position: sticky; top: 0; z-index: 20; background: var(--bg); border-bottom: 1px solid var(--border);
+      padding: calc(env(safe-area-inset-top) + 8px) 12px 8px;
     }
-    .back-btn {
-      background: var(--card);
-      border: 1px solid var(--border);
-      color: var(--text);
-      padding: 8px 14px;
-      border-radius: 10px;
-      font-weight: 600;
-      cursor: pointer;
+    .detail-bar-inner { max-width: 720px; margin: 0 auto; display: flex; align-items: center; gap: 6px; }
+    .detail-bar .spacer { flex: 1; }
+    .pill {
+      background: var(--card); border: 1px solid var(--border); height: 40px; min-width: 40px; padding: 0 14px;
+      border-radius: 20px; font-weight: 700; display: flex; align-items: center; justify-content: center;
     }
-    .font-controls {
-      display: flex;
-      gap: 6px;
-    }
-    .font-btn {
-      background: var(--card);
-      border: 1px solid var(--border);
-      color: var(--text);
-      padding: 8px 12px;
-      border-radius: 10px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-    .detail-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 20px;
-      box-shadow: var(--shadow);
-    }
-    .detail-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 12px;
-      margin-bottom: 16px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid var(--border);
-    }
-    .detail-title {
-      font-size: 1.3rem;
-      font-weight: 700;
-      color: var(--primary);
-    }
-    .audio-box {
-      display: none;
-      background: var(--primary-light);
-      border: 1px solid var(--primary);
-      border-radius: 12px;
-      padding: 12px;
-      margin-bottom: 18px;
-      text-align: center;
-    }
+    .pill.fav-pill { font-size: 1.3rem; color: #c9c4be; }
+    .pill.fav-pill.active { color: var(--accent); }
+    .detail-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 20px; box-shadow: var(--shadow); touch-action: pan-y; }
+    .detail-title { font-size: 1.3rem; font-weight: 700; color: var(--primary); margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+    .audio-box { display: none; margin-bottom: 18px; }
     .play-main-btn {
-      background: var(--primary);
-      color: #fff;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 24px;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
+      background: var(--primary); color: #fff; padding: 10px 20px; border-radius: 24px;
+      font-size: 1rem; font-weight: 600; display: inline-flex; align-items: center; gap: 8px;
     }
-    .lyrics {
-      white-space: pre-wrap;
-      line-height: 1.65;
-      font-size: 1.08rem;
-    }
+    .lyrics { white-space: pre-wrap; line-height: 1.65; font-size: 1.08rem; }
+    .lyrics .rline { font-weight: 700; color: var(--primary); }
+    .swipe-hint { text-align: center; color: var(--muted); font-size: .72rem; margin-top: 14px; }
+
+    /* ---------- player ---------- */
     .mini-player {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: var(--card);
-      border-top: 2px solid var(--primary);
-      padding: 10px 16px;
-      display: none;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      z-index: 30;
-      box-shadow: 0 -2px 12px rgba(0,0,0,0.12);
+      position: fixed; bottom: 0; left: 0; right: 0; background: var(--card); border-top: 2px solid var(--primary);
+      padding: 8px 12px calc(env(safe-area-inset-bottom) + 8px); display: none; z-index: 30; box-shadow: 0 -2px 12px rgba(0,0,0,.15);
     }
-    .mini-info {
-      flex: 1;
-      min-width: 0;
-    }
-    .mini-label {
-      font-size: 0.72rem;
-      color: var(--primary);
-      font-weight: 700;
-      text-transform: uppercase;
-    }
-    .mini-title {
-      font-size: 0.95rem;
-      font-weight: 600;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .mini-controls {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .mini-btn {
-      background: var(--primary);
-      color: #fff;
-      border: none;
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      font-size: 1rem;
-      cursor: pointer;
-    }
-    .mini-close {
-      background: transparent;
-      color: var(--muted);
-      border: none;
-      font-size: 1.2rem;
-      padding: 4px 8px;
-      cursor: pointer;
-    }
-    .status-msg {
-      text-align: center;
-      padding: 40px 16px;
-      color: var(--muted);
-      font-size: 1rem;
-    }
+    .mini-row { display: flex; align-items: center; gap: 4px; }
+    .mini-info { flex: 1; min-width: 0; text-align: left; padding: 4px 0; }
+    .mini-label { font-size: .68rem; color: var(--primary); font-weight: 700; text-transform: uppercase; }
+    .mini-title { font-size: .92rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .mini-btn { width: 38px; height: 38px; border-radius: 50%; font-size: 1rem; display: flex; align-items: center; justify-content: center; }
+    .mini-btn.skip { font-size: .75rem; font-weight: 700; border: 1px solid var(--border); }
+    .mini-btn.main { background: var(--primary); color: #fff; font-size: 1.1rem; }
+    .mini-close { color: var(--muted); font-size: 1.1rem; width: 32px; height: 38px; }
+    .mini-seek { display: flex; align-items: center; gap: 8px; font-size: .72rem; color: var(--muted); }
+    .mini-seek input { flex: 1; accent-color: var(--primary); }
   </style>
 </head>
 <body>
 
-<header>
-  <div class="header-top">
-    <h1>🎄 Colinde Tradiționale</h1>
-    <button class="icon-btn" id="theme-btn" title="Mod întunecat">🌙</button>
-  </div>
-  <div class="search-box">
-    <input type="text" id="search-input" placeholder="Caută după număr, titlu sau versuri..." />
-    <button class="clear-search" id="clear-search">✕</button>
-  </div>
-</header>
+<!-- ============ PAGINA 1: LISTA ============ -->
+<div id="list-page">
+  <header>
+    <div class="header-top">
+      <h1>🎄 Colinde Tradiționale</h1>
+      <button class="icon-btn" id="theme-btn" title="Mod întunecat / luminos">🌙</button>
+    </div>
+    <div class="search-box">
+      <input type="search" id="search-input" placeholder="Caută după număr, titlu sau versuri..." autocomplete="off" autocapitalize="off" spellcheck="false" />
+      <button class="clear-search" id="clear-search" aria-label="Șterge căutarea">✕</button>
+    </div>
+    <div class="tabs" id="tabs-bar">
+      <button class="tab active" data-tab="all" id="tab-all">Toate (0)</button>
+      <button class="tab" data-tab="fav" id="tab-fav">⭐ Favorite (0)</button>
+      <button class="tab" data-tab="audio" id="tab-audio">🎵 Cu audio (0)</button>
+    </div>
+    <div class="audio-bar" id="audio-bar" hidden>
+      <label><input type="checkbox" id="autoplay-check" /> Redare automată, una după alta</label>
+      <button class="play-all" id="play-all">▶ Redă tot</button>
+    </div>
+  </header>
 
-<div class="tabs" id="tabs-bar">
-  <button class="tab active" data-tab="all" id="tab-all">Toate (0)</button>
-  <button class="tab" data-tab="audio" id="tab-audio">🎵 Cu audio (0)</button>
-  <button class="tab" data-tab="fav" id="tab-fav">⭐ Favorite (0)</button>
-</div>
+  <div class="install" id="install" hidden>
+    <span id="install-text">Instalează aplicația pe telefon pentru acces rapid.</span>
+    <button class="go" id="install-go">Instalează</button>
+    <button class="x" id="install-x" aria-label="Închide">✕</button>
+  </div>
 
-<div class="container">
-  <div id="list-view">
+  <div class="container">
     <div id="carol-list"><div class="status-msg">Se încarcă colindele...</div></div>
   </div>
+</div>
 
-  <div id="detail-view">
-    <div class="detail-bar">
-      <button class="back-btn" id="back-btn">← Înapoi la listă</button>
-      <div class="font-controls">
-        <button class="font-btn" id="font-dec">A-</button>
-        <button class="font-btn" id="font-inc">A+</button>
-      </div>
+<!-- ============ PAGINA 2: COLIND ============ -->
+<div id="detail-view">
+  <div class="detail-bar">
+    <div class="detail-bar-inner">
+      <button class="pill" id="back-btn">← Listă</button>
+      <span class="spacer"></span>
+      <button class="pill" id="font-dec" aria-label="Micșorează textul">A−</button>
+      <button class="pill" id="font-inc" aria-label="Mărește textul">A+</button>
+      <button class="pill fav-pill" id="detail-fav-btn" aria-label="Favorit">★</button>
     </div>
-    <div class="detail-card">
-      <div class="detail-header">
-        <div class="detail-title" id="detail-title">Titlu colind</div>
-        <button class="fav-btn" id="detail-fav-btn">★</button>
-      </div>
+  </div>
+  <div class="container">
+    <div class="detail-card" id="detail-card">
+      <div class="detail-title" id="detail-title">Titlu colind</div>
       <div class="audio-box" id="audio-box">
         <button class="play-main-btn" id="play-main-btn">▶ Ascultă colindul</button>
       </div>
       <div class="lyrics" id="detail-lyrics"></div>
+      <div class="swipe-hint">← glisează stânga / dreapta pentru următoarea / precedenta colindă →</div>
     </div>
   </div>
 </div>
 
+<!-- ============ PLAYER ============ -->
 <div class="mini-player" id="mini-player">
-  <div class="mini-info">
-    <div class="mini-label">Se redă acum</div>
-    <div class="mini-title" id="mini-title">-</div>
+  <div class="mini-row">
+    <button class="mini-info" id="mini-info">
+      <div class="mini-label">Se redă acum</div>
+      <div class="mini-title" id="mini-title">-</div>
+    </button>
+    <button class="mini-btn" id="mini-prev" aria-label="Anterioara">⏮</button>
+    <button class="mini-btn skip" id="mini-back">−10</button>
+    <button class="mini-btn main" id="mini-play-pause" aria-label="Play / Pauză">⏸</button>
+    <button class="mini-btn skip" id="mini-fwd">+10</button>
+    <button class="mini-btn" id="mini-next" aria-label="Următoarea">⏭</button>
+    <button class="mini-close" id="mini-close" aria-label="Închide playerul">✕</button>
   </div>
-  <div class="mini-controls">
-    <button class="mini-btn" id="mini-play-pause">⏸</button>
-    <button class="mini-close" id="mini-close">✕</button>
+  <div class="mini-seek">
+    <span id="mini-cur">0:00</span>
+    <input type="range" id="mini-range" min="0" max="100" step="0.1" value="0" />
+    <span id="mini-dur">0:00</span>
   </div>
 </div>
 
@@ -401,304 +221,428 @@
   const GITHUB_REPO = "colinde-app";
   const RELEASE_TAG = "v1.0";
 
-  let allCarols = [];
-  let audioIds = new Set(JSON.parse(localStorage.getItem("colinde_audio_ids") || "[]"));
-  let favorites = JSON.parse(localStorage.getItem("colinde_favs") || "[]");
-  let currentTab = "all";
-  let currentCarol = null;
-  let playingCarol = null;
-  let fontSize = parseFloat(localStorage.getItem("colinde_font") || "1.08");
+  /* ---------------- utilitare ---------------- */
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const lsGet = (k, d) => { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } };
+  const lsSet = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} };
+  const fmtTime = s => { if (!isFinite(s)) return "0:00"; s = Math.floor(s); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); };
 
-  const listView = document.getElementById("list-view");
-  const detailView = document.getElementById("detail-view");
-  const tabsBar = document.getElementById("tabs-bar");
-  const carolListEl = document.getElementById("carol-list");
-  const searchInput = document.getElementById("search-input");
-  const clearSearchBtn = document.getElementById("clear-search");
-  const tabAllEl = document.getElementById("tab-all");
-  const tabAudioEl = document.getElementById("tab-audio");
-  const tabFavEl = document.getElementById("tab-fav");
-  const detailTitleEl = document.getElementById("detail-title");
-  const detailLyricsEl = document.getElementById("detail-lyrics");
-  const detailFavBtn = document.getElementById("detail-fav-btn");
-  const audioBox = document.getElementById("audio-box");
-  const playMainBtn = document.getElementById("play-main-btn");
-  const audioPlayer = document.getElementById("audio-player");
-  const miniPlayer = document.getElementById("mini-player");
-  const miniTitle = document.getElementById("mini-title");
-  const miniPlayPause = document.getElementById("mini-play-pause");
-  const miniClose = document.getElementById("mini-close");
-
-  if (localStorage.getItem("colinde_dark") === "1") {
-    document.body.classList.add("dark");
-    document.getElementById("theme-btn").textContent = "☀️";
+  /* căutare fără diacritice, virgule, ghilimele, punctuație */
+  function normalizeText(str) {
+    return String(str || "")
+      .normalize("NFD").replace(/[̀-ͯ]/g, "")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, " ")
+      .trim();
   }
 
-  document.getElementById("theme-btn").addEventListener("click", () => {
-    document.body.classList.toggle("dark");
-    const isDark = document.body.classList.contains("dark");
-    localStorage.setItem("colinde_dark", isDark ? "1" : "0");
-    document.getElementById("theme-btn").textContent = isDark ? "☀️" : "🌙";
+  /* primul rând din refren (R: ... / Refren: ...); dacă nu există refren, primul rând al colindei */
+  function cleanLine(l) {
+    return String(l).replace(/\s*[-–]\s*bis\b/ig, "").replace(/\s*\*+\s*$/g, "").replace(/[\s,;]+$/g, "").trim();
+  }
+  function previewLine(versuri) {
+    const lines = String(versuri || "").split(/\r?\n/);
+    for (let i = 0; i < lines.length; i++) {
+      const m = lines[i].match(/^\s*(?:refren|ref|r)\s*[:.]\s*(.*)$/i);
+      if (m) {
+        if (m[1].trim()) return cleanLine(m[1]);
+        for (let j = i + 1; j < lines.length; j++) if (lines[j].trim()) return cleanLine(lines[j]);
+      }
+    }
+    const first = lines.find(l => l.trim());
+    return first ? cleanLine(first) : "";
+  }
+
+  /* ---------------- stare ---------------- */
+  let allCarols = [];
+  let audioIds = new Set(lsGet("colinde_audio_ids", []).map(String));
+  let favorites = lsGet("colinde_favs", []).map(String);
+  let currentTab = "all";
+  let currentCarol = null;     // colinda afișată pe pagina 2
+  let playingCarol = null;     // colinda din player
+  let lastOpenedId = null;     // ultima colindă deschisă (pentru revenirea în listă)
+  let listDirty = false;
+  let autoplay = lsGet("colinde_autoplay", false);
+  let fontSize = parseFloat(lsGet("colinde_font", 1.08)) || 1.08;
+
+  const listPage = $("list-page"), detailView = $("detail-view");
+  const carolListEl = $("carol-list"), searchInput = $("search-input"), clearSearchBtn = $("clear-search");
+  const detailTitleEl = $("detail-title"), detailLyricsEl = $("detail-lyrics"), detailFavBtn = $("detail-fav-btn");
+  const audioBox = $("audio-box"), playMainBtn = $("play-main-btn"), audioPlayer = $("audio-player");
+  const miniPlayer = $("mini-player"), miniTitle = $("mini-title"), miniPlayPause = $("mini-play-pause");
+
+  if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+
+  /* ---------------- tema ---------------- */
+  function applyTheme(dark) {
+    document.body.classList.toggle("dark", dark);
+    $("theme-btn").textContent = dark ? "☀️" : "🌙";
+    document.querySelector('meta[name="theme-color"]').setAttribute("content", dark ? "#2d1b1c" : "#8b1e24");
+  }
+  applyTheme(lsGet("colinde_dark_v2", window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches));
+  $("theme-btn").addEventListener("click", () => {
+    const dark = !document.body.classList.contains("dark");
+    lsSet("colinde_dark_v2", dark);
+    applyTheme(dark);
   });
 
-  function normalizeText(str) {
-  return (str || "")
-    .toString()
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[șş]/g, "s")
-    .replace(/[țţ]/g, "t");
-}
-
-  function getMp3Url(id) {
-    return `https://github.com/${GITHUB_USER}/${GITHUB_REPO}/releases/download/${RELEASE_TAG}/${id}.mp3`;
-  }
+  const getMp3Url = id => `https://github.com/${GITHUB_USER}/${GITHUB_REPO}/releases/download/${RELEASE_TAG}/${id}.mp3`;
+  const audioList = () => allCarols.filter(c => audioIds.has(c.id));
 
   function updateCounts() {
-    tabAllEl.textContent = `Toate (${allCarols.length})`;
-    const validAudio = allCarols.filter(c => audioIds.has(String(c.id)));
-    tabAudioEl.textContent = `🎵 Cu audio (${validAudio.length})`;
-    const validFavs = favorites.filter(id => allCarols.some(c => String(c.id) === String(id)));
-    tabFavEl.textContent = `⭐ Favorite (${validFavs.length})`;
+    $("tab-all").textContent = `Toate (${allCarols.length})`;
+    $("tab-audio").textContent = `🎵 Cu audio (${audioList().length})`;
+    $("tab-fav").textContent = `⭐ Favorite (${allCarols.filter(c => favorites.includes(c.id)).length})`;
   }
 
-  function toggleFavorite(id, e) {
-    if (e) e.stopPropagation();
-    const strId = String(id);
-    if (favorites.includes(strId)) {
-      favorites = favorites.filter(f => f !== strId);
-    } else {
-      favorites.push(strId);
+  /* ---------------- lista ---------------- */
+  function filteredList() {
+    const q = normalizeText(searchInput.value);
+    let list = allCarols;
+    if (currentTab === "audio") list = list.filter(c => audioIds.has(c.id));
+    else if (currentTab === "fav") list = list.filter(c => favorites.includes(c.id));
+    if (q) {
+      const tokens = q.split(" ");
+      list = list.filter(c => c.id === q || tokens.every(t => c._n.includes(t)));
     }
-    localStorage.setItem("colinde_favs", JSON.stringify(favorites));
-    updateCounts();
-    renderList();
-    if (currentCarol && String(currentCarol.id) === strId) {
-      detailFavBtn.classList.toggle("active", favorites.includes(strId));
-    }
+    return list;
   }
 
   function renderList() {
-    const query = normalizeText(searchInput.value.trim());
-    clearSearchBtn.style.display = query ? "block" : "none";
+    listDirty = false;
+    const hasQuery = !!searchInput.value.trim();
+    clearSearchBtn.style.display = hasQuery ? "block" : "none";
+    const filtered = filteredList();
 
-    let filtered = allCarols;
-    if (currentTab === "audio") {
-      filtered = filtered.filter(c => audioIds.has(String(c.id)));
-    } else if (currentTab === "fav") {
-      filtered = filtered.filter(c => favorites.includes(String(c.id)));
-    }
-
-    if (query) {
-      filtered = filtered.filter(c =>
-        String(c.id) === query ||
-        normalizeText(c.titlu).includes(query) ||
-        normalizeText(c.versuri).includes(query)
-      );
-    }
-
-    if (filtered.length === 0) {
-      let emptyMsg = "Nu s-a găsit niciun colind.";
-      if (currentTab === "fav" && !query) emptyMsg = "Nu ai adăugat încă niciun colind la favorite.";
-      if (currentTab === "audio" && !query) emptyMsg = "Nu s-au găsit colinde cu fișier audio încărcat.";
-      carolListEl.innerHTML = `<div class="status-msg">${emptyMsg}</div>`;
+    if (!filtered.length) {
+      let msg = "Nu s-a găsit nicio colindă.";
+      if (currentTab === "fav" && !hasQuery) msg = "Nu ai adăugat încă nicio colindă la favorite.";
+      if (currentTab === "audio" && !hasQuery) msg = "Nu s-au găsit colinde cu fișier audio.";
+      carolListEl.innerHTML = `<div class="status-msg">${msg}</div>`;
       return;
     }
-
-    const fragment = document.createDocumentFragment();
-    filtered.forEach(carol => {
-      const strId = String(carol.id);
-      const isFav = favorites.includes(strId);
-      const hasAudio = audioIds.has(strId);
-      const firstLine = (carol.versuri || "").split(/\r?\n/).find(l => l.trim()) || "Fără versuri";
-      const div = document.createElement("div");
-      div.className = "carol-item";
-      div.innerHTML = `
+    carolListEl.innerHTML = filtered.map(c => {
+      const fav = favorites.includes(c.id);
+      return `<div class="carol-item" data-id="${esc(c.id)}">
         <div class="carol-info">
-          <div class="carol-num">${carol.id}</div>
-          <div style="min-width:0;flex:1;">
-            <div class="carol-title">
-              <span style="overflow:hidden;text-overflow:ellipsis;">${carol.titlu}</span>
-              ${hasAudio ? '<span class="audio-badge" title="Are înregistrare audio">🎵</span>' : ''}
-            </div>
-            <div class="carol-preview">${firstLine}</div>
+          <div class="carol-num">${esc(c.id)}</div>
+          <div class="carol-text">
+            <div class="carol-title"><span class="ttl">${esc(c.titlu)}</span>${audioIds.has(c.id) ? '<span class="audio-badge" title="Are înregistrare audio">🎵</span>' : ""}</div>
+            ${c._prev ? `<div class="carol-preview">${esc(c._prev)}</div>` : ""}
           </div>
         </div>
-        <button class="fav-btn ${isFav ? "active" : ""}" title="Favorit">★</button>
-      `;
-      div.querySelector(".fav-btn").addEventListener("click", (e) => toggleFavorite(carol.id, e));
-      div.addEventListener("click", () => openCarol(carol));
-      fragment.appendChild(div);
-    });
-
-    carolListEl.innerHTML = "";
-    carolListEl.appendChild(fragment);
+        <button class="fav-btn ${fav ? "active" : ""}" data-fav="${esc(c.id)}" aria-label="Favorit">★</button>
+      </div>`;
+    }).join("");
   }
 
-  function checkAudioAvailable(id) {
-    const strId = String(id);
-    if (audioIds.has(strId)) {
-      audioBox.style.display = "block";
-      updatePlayButtonState();
-      return;
+  carolListEl.addEventListener("click", e => {
+    const favBtn = e.target.closest("[data-fav]");
+    if (favBtn) { e.stopPropagation(); toggleFavorite(favBtn.dataset.fav); return; }
+    const item = e.target.closest(".carol-item");
+    if (item) openCarol(item.dataset.id);
+  });
+
+  function toggleFavorite(id) {
+    id = String(id);
+    favorites = favorites.includes(id) ? favorites.filter(f => f !== id) : [...favorites, id];
+    lsSet("colinde_favs", favorites);
+    updateCounts();
+    if (currentCarol && currentCarol.id === id) detailFavBtn.classList.toggle("active", favorites.includes(id));
+    if (detailView.style.display === "block") { listDirty = true; return; }
+    if (currentTab === "fav") { renderList(); return; }
+    const btn = carolListEl.querySelector(`[data-fav="${CSS.escape(id)}"]`);
+    if (btn) btn.classList.toggle("active", favorites.includes(id));
+  }
+
+  /* filtre */
+  document.querySelectorAll(".tab").forEach(btn => btn.addEventListener("click", () => {
+    document.querySelectorAll(".tab").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    currentTab = btn.dataset.tab;
+    $("audio-bar").hidden = currentTab !== "audio";
+    renderList();
+    window.scrollTo(0, 0);
+  }));
+  searchInput.addEventListener("input", renderList);
+  clearSearchBtn.addEventListener("click", () => { searchInput.value = ""; renderList(); searchInput.focus(); });
+
+  /* ---------------- navigare / istoric ---------------- */
+  function showList(toLast) {
+    detailView.style.display = "none";
+    listPage.style.display = "block";
+    currentCarol = null;
+    if (listDirty) renderList();
+    if (toLast && lastOpenedId) {
+      let el = carolListEl.querySelector(`.carol-item[data-id="${CSS.escape(lastOpenedId)}"]`);
+      if (!el && (searchInput.value || currentTab !== "all")) {
+        /* colinda nu mai e în filtrul curent: arătăm lista completă */
+        searchInput.value = ""; currentTab = "all";
+        document.querySelectorAll(".tab").forEach(b => b.classList.toggle("active", b.dataset.tab === "all"));
+        $("audio-bar").hidden = true;
+        renderList();
+        el = carolListEl.querySelector(`.carol-item[data-id="${CSS.escape(lastOpenedId)}"]`);
+      }
+      if (el) {
+        el.scrollIntoView({ block: "center" });
+        el.classList.add("last");
+        setTimeout(() => el.classList.remove("last"), 1600);
+        return;
+      }
     }
+    window.scrollTo(0, 0);
+  }
+
+  function showCarol(id) {
+    const carol = allCarols.find(c => c.id === String(id));
+    if (!carol) { showList(false); return; }
+    currentCarol = carol;
+    lastOpenedId = carol.id;
+    detailTitleEl.textContent = `${carol.id}. ${carol.titlu}`;
+    const lines = String(carol.versuri || "Versuri indisponibile.").replace(/\r\n/g, "\n").split("\n");
+    detailLyricsEl.innerHTML = lines.map(l => /^\s*(?:refren|ref|r)\s*[:.]/i.test(l) ? `<span class="rline">${esc(l)}</span>` : esc(l)).join("\n");
+    detailLyricsEl.style.fontSize = fontSize + "rem";
+    detailFavBtn.classList.toggle("active", favorites.includes(carol.id));
+    listPage.style.display = "none";
+    detailView.style.display = "block";
+    window.scrollTo(0, 0);
+    checkAudioAvailable(carol.id);
+  }
+
+  function openCarol(id) {
+    id = String(id);
+    lastOpenedId = id;
+    history.pushState({ v: "song", id, fromList: true }, "", "#/c/" + id);
+    showCarol(id);
+  }
+
+  function route(fromPop) {
+    const m = location.hash.match(/^#\/c\/([^/]+)/);
+    if (m) showCarol(decodeURIComponent(m[1])); else showList(!!fromPop);
+  }
+  window.addEventListener("popstate", () => route(true));
+
+  $("back-btn").addEventListener("click", () => {
+    if (history.state && history.state.fromList) history.back();
+    else { history.replaceState(null, "", "#/"); showList(true); }
+  });
+
+  /* swipe stânga / dreapta între colinde */
+  (function () {
+    let sx = 0, sy = 0, st = 0;
+    const el = $("detail-view");
+    el.addEventListener("touchstart", e => { const t = e.changedTouches[0]; sx = t.clientX; sy = t.clientY; st = Date.now(); }, { passive: true });
+    el.addEventListener("touchend", e => {
+      const t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
+      if (Math.abs(dx) < 70 || Math.abs(dy) > 60 || Math.abs(dx) < Math.abs(dy) * 1.8 || Date.now() - st > 700) return;
+      goRelative(dx < 0 ? 1 : -1);
+    }, { passive: true });
+  })();
+
+  function goRelative(step) {
+    if (!currentCarol) return;
+    let list = filteredList();
+    let i = list.findIndex(c => c.id === currentCarol.id);
+    if (i < 0) { list = allCarols; i = list.findIndex(c => c.id === currentCarol.id); }
+    const next = list[i + step];
+    if (!next) return;
+    history.replaceState({ v: "song", id: next.id, fromList: !!(history.state && history.state.fromList) }, "", "#/c/" + next.id);
+    showCarol(next.id);
+  }
+
+  /* ---------------- font ---------------- */
+  function setFont(v) { fontSize = v; lsSet("colinde_font", v); detailLyricsEl.style.fontSize = v + "rem"; }
+  $("font-inc").addEventListener("click", () => setFont(Math.min(2.6, +(fontSize + 0.1).toFixed(2))));
+  $("font-dec").addEventListener("click", () => setFont(Math.max(0.8, +(fontSize - 0.1).toFixed(2))));
+  detailFavBtn.addEventListener("click", () => { if (currentCarol) toggleFavorite(currentCarol.id); });
+
+  /* ---------------- audio ---------------- */
+  function checkAudioAvailable(id) {
+    if (audioIds.has(id)) { audioBox.style.display = "block"; updatePlayButtonState(); return; }
     audioBox.style.display = "none";
-    const url = getMp3Url(id);
     const probe = new Audio();
     probe.preload = "metadata";
     probe.onloadedmetadata = () => {
-      audioIds.add(strId);
-      localStorage.setItem("colinde_audio_ids", JSON.stringify([...audioIds]));
+      audioIds.add(id);
+      lsSet("colinde_audio_ids", [...audioIds]);
       updateCounts();
-      if (currentCarol && String(currentCarol.id) === strId) {
-        audioBox.style.display = "block";
-        updatePlayButtonState();
-      }
+      listDirty = true;
+      if (currentCarol && currentCarol.id === id) { audioBox.style.display = "block"; updatePlayButtonState(); }
       probe.src = "";
     };
-    probe.onerror = () => {
-      if (currentCarol && String(currentCarol.id) === strId) {
-        audioBox.style.display = "none";
-      }
-    };
-    probe.src = url;
+    probe.src = getMp3Url(id);
   }
 
   function updatePlayButtonState() {
     if (!currentCarol) return;
-    const isThisPlaying = playingCarol && String(playingCarol.id) === String(currentCarol.id) && !audioPlayer.paused;
-    playMainBtn.textContent = isThisPlaying ? "⏸ Pauză" : "▶ Ascultă colindul";
+    const thisPlaying = playingCarol && playingCarol.id === currentCarol.id && !audioPlayer.paused;
+    playMainBtn.textContent = thisPlaying ? "⏸ Oprește" : "▶ Ascultă colindul";
   }
 
-  function openCarol(carol) {
-    currentCarol = carol;
-    detailTitleEl.textContent = `${carol.id}. ${carol.titlu}`;
-    detailLyricsEl.textContent = (carol.versuri || "Versuri indisponibile.").replace(/\r\n/g, "\n");
-    detailLyricsEl.style.fontSize = fontSize + "rem";
-    detailFavBtn.classList.toggle("active", favorites.includes(String(carol.id)));
-
-    listView.style.display = "none";
-    tabsBar.style.display = "none";
-    detailView.style.display = "block";
-    window.scrollTo(0, 0);
-
-    checkAudioAvailable(carol.id);
+  function loadAndPlay(id) {
+    const carol = allCarols.find(c => c.id === String(id));
+    if (!carol) return;
+    if (!playingCarol || playingCarol.id !== carol.id) {
+      playingCarol = carol;
+      audioPlayer.src = getMp3Url(carol.id);
+      miniTitle.textContent = `${carol.id}. ${carol.titlu}`;
+      miniPlayer.style.display = "block";
+      document.body.classList.add("has-player");
+      setupMediaSession(carol);
+    }
+    audioPlayer.play().catch(() => {});
+    updatePlayButtonState();
   }
 
-  document.getElementById("back-btn").addEventListener("click", () => {
-    currentCarol = null;
-    detailView.style.display = "none";
-    tabsBar.style.display = "flex";
-    listView.style.display = "block";
-    renderList();
-  });
+  function togglePlay() {
+    if (!playingCarol) return;
+    audioPlayer.paused ? audioPlayer.play().catch(() => {}) : audioPlayer.pause();
+  }
 
-  detailFavBtn.addEventListener("click", () => {
-    if (currentCarol) toggleFavorite(currentCarol.id);
-  });
-
-  document.getElementById("font-inc").addEventListener("click", () => {
-    fontSize = Math.min(1.8, +(fontSize + 0.1).toFixed(2));
-    detailLyricsEl.style.fontSize = fontSize + "rem";
-    localStorage.setItem("colinde_font", fontSize);
-  });
-
-  document.getElementById("font-dec").addEventListener("click", () => {
-    fontSize = Math.max(0.85, +(fontSize - 0.1).toFixed(2));
-    detailLyricsEl.style.fontSize = fontSize + "rem";
-    localStorage.setItem("colinde_font", fontSize);
-  });
+  function stepTrack(step) {
+    const list = audioList();
+    const i = list.findIndex(c => playingCarol && c.id === playingCarol.id);
+    const next = list[i + step];
+    if (next) loadAndPlay(next.id);
+  }
 
   playMainBtn.addEventListener("click", () => {
     if (!currentCarol) return;
-    const url = getMp3Url(currentCarol.id);
-    if (playingCarol && String(playingCarol.id) === String(currentCarol.id)) {
-      if (audioPlayer.paused) {
-        audioPlayer.play();
-      } else {
-        audioPlayer.pause();
-      }
-    } else {
-      playingCarol = currentCarol;
-      audioPlayer.src = url;
-      audioPlayer.play();
-      miniTitle.textContent = `${currentCarol.id}. ${currentCarol.titlu}`;
-      miniPlayer.style.display = "flex";
-      if ("mediaSession" in navigator) {
-        navigator.mediaSession.metadata = new MediaMetadata({
-          title: currentCarol.titlu,
-          artist: "Colinde Tradiționale",
-          artwork: [{ src: "icon.png", sizes: "512x512", type: "image/png" }]
-        });
-      }
+    if (playingCarol && playingCarol.id === currentCarol.id) togglePlay();
+    else loadAndPlay(currentCarol.id);
+  });
+  miniPlayPause.addEventListener("click", togglePlay);
+  $("mini-prev").addEventListener("click", () => stepTrack(-1));
+  $("mini-next").addEventListener("click", () => stepTrack(1));
+  $("mini-back").addEventListener("click", () => { audioPlayer.currentTime = Math.max(0, audioPlayer.currentTime - 10); });
+  $("mini-fwd").addEventListener("click", () => { audioPlayer.currentTime = Math.min(audioPlayer.duration || 1e9, audioPlayer.currentTime + 10); });
+  $("mini-range").addEventListener("input", e => { if (audioPlayer.duration) audioPlayer.currentTime = e.target.value / 100 * audioPlayer.duration; });
+  /* apăs pe player => deschide versurile colindei care se redă (dacă nu ești deja acolo) */
+  $("mini-info").addEventListener("click", () => {
+    if (playingCarol && (!currentCarol || currentCarol.id !== playingCarol.id)) openCarol(playingCarol.id);
+  });
+  $("mini-close").addEventListener("click", () => {
+    audioPlayer.pause();
+    audioPlayer.removeAttribute("src");
+    audioPlayer.load();
+    playingCarol = null;
+    miniPlayer.style.display = "none";
+    document.body.classList.remove("has-player");
+    updatePlayButtonState();
+  });
+
+  $("autoplay-check").checked = autoplay;
+  $("autoplay-check").addEventListener("change", e => { autoplay = e.target.checked; lsSet("colinde_autoplay", autoplay); });
+  $("play-all").addEventListener("click", () => {
+    const list = audioList();
+    if (!list.length) return;
+    autoplay = true; $("autoplay-check").checked = true; lsSet("colinde_autoplay", true);
+    loadAndPlay(list[0].id);
+  });
+
+  audioPlayer.addEventListener("play", () => { miniPlayPause.textContent = "⏸"; syncSession(); updatePlayButtonState(); });
+  audioPlayer.addEventListener("pause", () => { miniPlayPause.textContent = "▶"; syncSession(); updatePlayButtonState(); });
+  audioPlayer.addEventListener("ended", () => {
+    miniPlayPause.textContent = "▶";
+    if (autoplay) stepTrack(1);
+    updatePlayButtonState();
+  });
+  audioPlayer.addEventListener("error", () => { if (playingCarol && autoplay) stepTrack(1); });
+  audioPlayer.addEventListener("timeupdate", () => {
+    $("mini-cur").textContent = fmtTime(audioPlayer.currentTime);
+    $("mini-dur").textContent = fmtTime(audioPlayer.duration);
+    if (audioPlayer.duration) $("mini-range").value = audioPlayer.currentTime / audioPlayer.duration * 100;
+    if ("mediaSession" in navigator && navigator.mediaSession.setPositionState && audioPlayer.duration) {
+      try { navigator.mediaSession.setPositionState({ duration: audioPlayer.duration, playbackRate: audioPlayer.playbackRate, position: Math.min(audioPlayer.currentTime, audioPlayer.duration) }); } catch (e) {}
     }
   });
 
-  miniPlayPause.addEventListener("click", () => {
-    if (audioPlayer.paused) audioPlayer.play();
-    else audioPlayer.pause();
-  });
-
-  miniClose.addEventListener("click", () => {
-    audioPlayer.pause();
-    audioPlayer.src = "";
-    playingCarol = null;
-    miniPlayer.style.display = "none";
-    updatePlayButtonState();
-  });
-
-  audioPlayer.addEventListener("play", () => {
-    miniPlayPause.textContent = "⏸";
-    updatePlayButtonState();
-  });
-
-  audioPlayer.addEventListener("pause", () => {
-    miniPlayPause.textContent = "▶";
-    updatePlayButtonState();
-  });
-
-  audioPlayer.addEventListener("ended", () => {
-    miniPlayPause.textContent = "▶";
-    updatePlayButtonState();
-  });
-
-  document.querySelectorAll(".tab").forEach(btn => {
-    btn.addEventListener("click", () => {
-      document.querySelectorAll(".tab").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      currentTab = btn.dataset.tab;
-      renderList();
+  /* redare în fundal / ecran blocat */
+  function syncSession() {
+    if ("mediaSession" in navigator) navigator.mediaSession.playbackState = audioPlayer.paused ? "paused" : "playing";
+  }
+  function setupMediaSession(carol) {
+    if (!("mediaSession" in navigator)) return;
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: carol.titlu, artist: "Colinde Tradiționale", album: "Colinde",
+      artwork: [{ src: "icon.png", sizes: "512x512", type: "image/png" }]
     });
-  });
+    const set = (a, f) => { try { navigator.mediaSession.setActionHandler(a, f); } catch (e) {} };
+    set("play", () => audioPlayer.play());
+    set("pause", () => audioPlayer.pause());
+    set("previoustrack", () => stepTrack(-1));
+    set("nexttrack", () => stepTrack(1));
+    set("seekbackward", d => { audioPlayer.currentTime = Math.max(0, audioPlayer.currentTime - ((d && d.seekOffset) || 10)); });
+    set("seekforward", d => { audioPlayer.currentTime = Math.min(audioPlayer.duration || 1e9, audioPlayer.currentTime + ((d && d.seekOffset) || 10)); });
+    set("seekto", d => { if (d && d.seekTime != null) audioPlayer.currentTime = d.seekTime; });
+  }
 
-  searchInput.addEventListener("input", renderList);
-  clearSearchBtn.addEventListener("click", () => {
-    searchInput.value = "";
-    renderList();
-    searchInput.focus();
-  });
+  /* ---------------- instalare aplicație ---------------- */
+  (function () {
+    if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
+    const standalone = (window.matchMedia && matchMedia("(display-mode: standalone)").matches) || navigator.standalone;
+    if (standalone || lsGet("colinde_install_done", false)) return;
+    const box = $("install");
+    let deferred = null;
+    const finish = () => { box.hidden = true; lsSet("colinde_install_done", true); };
+    $("install-x").addEventListener("click", finish);
+    window.addEventListener("beforeinstallprompt", e => {
+      e.preventDefault();
+      deferred = e;
+      $("install-go").hidden = false;
+      box.hidden = false;
+    });
+    $("install-go").addEventListener("click", async () => {
+      if (!deferred) return;
+      deferred.prompt();
+      try { await deferred.userChoice; } catch (e) {}
+      deferred = null;
+      finish();
+    });
+    window.addEventListener("appinstalled", finish);
+    if (/iphone|ipad|ipod/i.test(navigator.userAgent)) {
+      $("install-text").textContent = "Instalează: apasă butonul Partajează (⬆︎), apoi „Adaugă pe ecranul principal”.";
+      $("install-go").hidden = true;
+      box.hidden = false;
+    }
+  })();
 
+  /* ---------------- încărcare date ---------------- */
   async function detectReleaseAudios() {
     try {
-      const apiUrl = `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/releases/tags/${RELEASE_TAG}`;
-      const res = await fetch(apiUrl);
-      if (!res.ok) return;
-      const data = await res.json();
-      if (Array.isArray(data.assets)) {
-        const found = new Set();
-        data.assets.forEach(asset => {
-          const match = String(asset.name || "").match(/^(\d+)\.mp3$/i);
-          if (match) found.add(match[1]);
-        });
-        if (found.size > 0) {
-          audioIds = found;
-          localStorage.setItem("colinde_audio_ids", JSON.stringify([...audioIds]));
-          updateCounts();
-          renderList();
-        }
+      const rel = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/releases/tags/${RELEASE_TAG}`);
+      if (!rel.ok) return;
+      const relData = await rel.json();
+      const found = new Set();
+      for (let page = 1; page <= 20; page++) {
+        const res = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/releases/${relData.id}/assets?per_page=100&page=${page}`);
+        if (!res.ok) break;
+        const assets = await res.json();
+        assets.forEach(a => { const m = String(a.name || "").match(/^(\d+)\.mp3$/i); if (m) found.add(m[1]); });
+        if (assets.length < 100) break;
+      }
+      if (found.size > 0) {
+        audioIds = found;
+        lsSet("colinde_audio_ids", [...audioIds]);
+        updateCounts();
+        if (detailView.style.display === "block") { listDirty = true; if (currentCarol) checkAudioAvailable(currentCarol.id); }
+        else renderList();
       }
     } catch (e) {}
+  }
+
+  function prepare(raw) {
+    const list = Array.isArray(raw) ? raw : (raw.colinde || []);
+    return list
+      .filter(i => i && String(i.id || "").trim() !== "" && String(i.titlu || "").trim() !== "")
+      .map(i => {
+        const c = { id: String(i.id).trim(), titlu: String(i.titlu).trim(), versuri: String(i.versuri || "") };
+        c._n = normalizeText(c.titlu + " " + c.versuri);
+        c._prev = previewLine(c.versuri);
+        return c;
+      })
+      .sort((a, b) => (parseFloat(a.id) || 0) - (parseFloat(b.id) || 0));
   }
 
   async function loadCarols() {
@@ -706,26 +650,25 @@
       const res = await fetch("colinde.json?v=" + Date.now());
       if (!res.ok) throw new Error("HTTP " + res.status);
       const raw = await res.json();
-      const list = Array.isArray(raw) ? raw : (raw.colinde || []);
-      allCarols = list
-        .filter(item => item && String(item.id || "").trim() !== "" && String(item.titlu || "").trim() !== "")
-        .map(item => ({
-          id: String(item.id).trim(),
-          titlu: String(item.titlu).trim(),
-          versuri: String(item.versuri || "")
-        }));
-      localStorage.setItem("colinde_cache", JSON.stringify(allCarols));
+      allCarols = prepare(raw);
+      try { localStorage.setItem("colinde_cache_raw", JSON.stringify(raw)); } catch (e) {}
     } catch (err) {
-      const cached = localStorage.getItem("colinde_cache");
-      if (cached) {
-        allCarols = JSON.parse(cached);
-      } else {
-        carolListEl.innerHTML = `<div class="status-msg">Eroare la încărcarea colindelor. Verifică conexiunea la internet.</div>`;
-        return;
-      }
+      const cached = lsGet("colinde_cache_raw", null);
+      if (cached) allCarols = prepare(cached);
+      else { carolListEl.innerHTML = `<div class="status-msg">Eroare la încărcarea colindelor. Verifică conexiunea la internet.</div>`; return; }
     }
     updateCounts();
     renderList();
+    /* deschidere directă pe o colindă: butonul înapoi duce la listă */
+    const m = location.hash.match(/^#\/c\/([^/]+)/);
+    if (m) {
+      const id = decodeURIComponent(m[1]);
+      history.replaceState(null, "", "#/");
+      history.pushState({ v: "song", id, fromList: true }, "", "#/c/" + id);
+      showCarol(id);
+    } else if (!location.hash) {
+      history.replaceState(null, "", "#/");
+    }
     detectReleaseAudios();
   }
 
